@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linkedin, Instagram } from 'lucide-react';
+import { Linkedin, Copy } from 'lucide-react';
 
 export default function RoastResult({ result, language }) {
   const [copied, setCopied] = React.useState(false);
@@ -35,11 +35,10 @@ export default function RoastResult({ result, language }) {
     window.open(url, '_blank');
   };
 
-  const handleInstagramShare = () => {
-    navigator.clipboard.writeText(shareText).then(() => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(result.roasted_answer).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      window.open('https://instagram.com', '_blank');
     });
   };
 
@@ -97,11 +96,11 @@ export default function RoastResult({ result, language }) {
               <Linkedin className="w-5 h-5" />
             </button>
             <button 
-              onClick={handleInstagramShare}
+              onClick={handleCopy}
               className="w-12 h-12 rounded-full bg-[#F4D03F] border-2 border-black flex items-center justify-center hover:translate-y-1 hover:shadow-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-black"
-              title="Copy & Open Instagram"
+              title="Copy to Clipboard"
             >
-              <Instagram className="w-5 h-5" />
+              <Copy className="w-5 h-5" />
             </button>
           </div>
         </div>
