@@ -36,7 +36,7 @@ export default function Roaster() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-12 px-4 font-sans relative">
+    <div className="min-h-screen flex flex-col items-center py-12 px-4 font-sans relative bg-white text-gray-900 selection:bg-blue-100">
       
       <LanguageSwitcher language={language} setLanguage={setLanguage} />
 

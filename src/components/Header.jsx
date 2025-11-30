@@ -1,30 +1,28 @@
 import React from 'react';
-import { Coffee } from 'lucide-react';
 
 export default function Header({ language }) {
   return (
     <>
       {/* Header Pill */}
-      <div className="bg-white border-2 border-black rounded-full px-8 py-3 flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-12 transform hover:-translate-y-1 transition-transform">
-        <Coffee className="w-6 h-6" />
-        <div className="flex flex-col leading-none">
-          <span className="font-bold text-lg">
-            {language === 'malayalam' ? 'താൻ ചോദിച്ചു' : 'YOU QUESTIONED'}
+      <div className="bg-[#FFF8E7] rounded-full px-6 py-3 md:px-10 md:py-4 flex items-center justify-center mb-8 animate-fade-in border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+        <div className="flex flex-col items-center leading-none gap-0.5 md:gap-1">
+          <span className="text-xl md:text-3xl font-black text-black tracking-tighter uppercase">
+            {language === 'malayalam' ? 'താൻ ചോദിച്ചു' : 'You Questioned'}
           </span>
-          <span className="text-[10px] font-bold tracking-wider text-gray-600">THE UNFILTERED CANDIDATE</span>
+          <span className="text-[9px] md:text-[11px] font-bold text-slate-600 uppercase tracking-[0.2em]">
+            The Unfiltered Candidate
+          </span>
         </div>
       </div>
 
       {/* Main Heading */}
-      <div className="text-center space-y-2 mb-12">
-        <h1 className="text-3xl md:text-4xl font-black text-brand-dark">
-          Ask your cringe HR question.
+      <div className="text-center space-y-4 mb-12 max-w-2xl">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
+          Ask your cringe <br className="hidden md:block" />
+          <span className="text-gray-400">HR question.</span>
         </h1>
-        <h1 className="text-3xl md:text-4xl font-black text-brand-dark">
+        <p className="text-lg text-gray-500 font-medium">
           {language === 'malayalam' ? 'നമ്മൾ റോസ്റ്റ് ചെയ്യാം.' : 'We will roast it.'}
-        </h1>
-        <p className="text-gray-400 font-medium mt-4">
-          We promise it will be painfully honest.
         </p>
       </div>
     </>

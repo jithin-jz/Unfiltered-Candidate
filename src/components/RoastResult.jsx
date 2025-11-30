@@ -2,39 +2,108 @@ import React from 'react';
 import { Linkedin, Instagram } from 'lucide-react';
 
 export default function RoastResult({ result, language }) {
+  const [copied, setCopied] = React.useState(false);
+  const [displayScore, setDisplayScore] = React.useState(0);
+
+  React.useEffect(() => {
+    if (result) {
+      let start = 0;
+      const end = result.unemployability_score;
+      const duration = 1500;
+      const increment = end / (duration / 16); // 60fps
+
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setDisplayScore(end);
+          clearInterval(timer);
+        } else {
+          setDisplayScore(Math.floor(start));
+        }
+      }, 16);
+
+      return () => clearInterval(timer);
+    }
+  }, [result]);
+
   if (!result) return null;
 
+  const shareText = `🔥 I just got roasted by The Unfiltered Candidate!\n\n"${result.roasted_answer}"\n\nMy Unemployability Score: ${result.unemployability_score}% 💀\n\n#RoastMe #HRRoast #TheUnfilteredCandidate`;
+
+  const handleLinkedInShare = () => {
+    const url = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`;
+    window.open(url, '_blank');
+  };
+
+  const handleInstagramShare = () => {
+    navigator.clipboard.writeText(shareText).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      window.open('https://instagram.com', '_blank');
+    });
+  };
+
   return (
-    <div className="w-full max-w-2xl bg-white rounded-[2rem] p-8 border-2 border-gray-100 shadow-xl animate-fade-in relative overflow-hidden">
-      {/* Floating Emojis */}
-      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 flex gap-2 bg-white px-4 py-1 rounded-full shadow-sm border border-gray-100">
+    <div className="w-full max-w-2xl relative mt-8">
+      {/* Floating Emoji Icon */}
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#FFF8E7] p-2 rounded-2xl shadow-sm border border-orange-100 z-10">
+        <span className="text-3xl">🍳</span>
       </div>
 
-      <h3 className="text-center font-black text-xl mb-6 mt-4 uppercase tracking-wide">
-        {language === 'malayalam' ? 'ബുദ്ധി 1%' : 'Brain on 1%'}
-      </h3>
-      
-      <p className="text-lg font-medium text-gray-700 leading-relaxed text-center mb-8">
-        {result.roasted_answer}
-      </p>
-
-      <div className="flex items-center justify-between border-t border-gray-100 pt-6">
-        <div className="flex items-center gap-4">
-          <div className="bg-brand-yellow border-2 border-black rounded-full px-6 py-2 font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            {result.unemployability_score}%
+      <div className="w-full bg-[#FFF8E7] rounded-3xl p-8 pt-12 shadow-lg border-b-8 border-r-4 border-[#E5DCC5] relative overflow-hidden">
+        {copied && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-3 py-1 rounded-full animate-fade-in z-20">
+            Copied to clipboard!
           </div>
-          <span className="font-black uppercase tracking-wider text-sm">
-            {language === 'malayalam' ? 'ജോലി കിട്ടില്ല' : 'Unhireable'}
-          </span>
+        )}
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h3 className="font-black text-xl text-gray-900 uppercase tracking-wider">
+            {language === 'malayalam' ? 'റോസ്റ്റ് ഔട്ട്പുട്ട്' : 'ROASTED OUTPUT'}
+          </h3>
         </div>
         
-        <div className="flex gap-2">
-          <button className="w-10 h-10 border-2 border-black rounded-full flex items-center justify-center hover:bg-brand-yellow transition-colors">
-            <Linkedin className="w-5 h-5" />
-          </button>
-          <button className="w-10 h-10 border-2 border-black rounded-full flex items-center justify-center hover:bg-brand-yellow transition-colors">
-            <Instagram className="w-5 h-5" />
-          </button>
+        {/* Content */}
+        <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed mb-10 text-center">
+          {result.roasted_answer}
+        </p>
+
+        {/* Footer Section */}
+        <div className="flex flex-col md:flex-row items-end justify-between gap-6">
+          
+          {/* Score Pill */}
+          <div className="flex flex-col gap-2 w-full md:w-auto">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
+              {language === 'malayalam' ? 'ജോലി കിട്ടില്ല' : 'UNEMPLOYABILITY SCORE'}
+            </span>
+            <div className="flex items-center bg-[#F4D03F] rounded-full p-1.5 pr-6 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full md:w-auto min-w-[200px]">
+              <div className="bg-black text-[#F4D03F] rounded-full px-4 py-1.5 font-black text-xl min-w-[80px] text-center">
+                {displayScore}%
+              </div>
+              <div className="flex-1 text-center font-black text-black uppercase tracking-wider text-sm ml-2">
+                {language === 'malayalam' ? 'പണി പാളി' : 'UNHIREABLE'}
+              </div>
+            </div>
+          </div>
+
+          {/* Share Buttons */}
+          <div className="flex gap-3">
+            <button 
+              onClick={handleLinkedInShare}
+              className="w-12 h-12 rounded-full bg-[#F4D03F] border-2 border-black flex items-center justify-center hover:translate-y-1 hover:shadow-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-black"
+              title="Share on LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={handleInstagramShare}
+              className="w-12 h-12 rounded-full bg-[#F4D03F] border-2 border-black flex items-center justify-center hover:translate-y-1 hover:shadow-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-black"
+              title="Copy & Open Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

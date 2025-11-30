@@ -7,16 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        'brand-yellow': '#EBCB65',
-        'brand-dark': '#1A1A1A',
-        'brand-bg': '#F4F6F8',
-        'brand-gray': '#666666',
+        'minimal-bg': '#FFFFFF',
+        'minimal-text': '#111827',
+        'minimal-accent': '#3B82F6', // Soft Blue
+        'minimal-gray': '#F3F4F6',
+        'minimal-border': '#E5E7EB',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
       },
       boxShadow: {
-        'brutal': '4px 4px 0px 0px #000000',
+        'subtle': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+        'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
       },
     },
   },
