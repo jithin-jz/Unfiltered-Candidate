@@ -50,7 +50,7 @@ export default function Roaster() {
         language={language} 
       />
 
-      <RoastResult result={result} language={language} />
+      <RoastResult result={result} language={language} question={question} />
 
       <Footer />
 
