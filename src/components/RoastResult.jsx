@@ -31,8 +31,27 @@ export default function RoastResult({ result, language }) {
   const shareText = `🔥 I just got roasted by The Unfiltered Candidate!\n\n"${result.roasted_answer}"\n\nMy Unemployability Score: ${result.unemployability_score}% 💀\n\n#RoastMe #HRRoast #TheUnfilteredCandidate`;
 
   const handleLinkedInShare = () => {
-    const url = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`;
-    window.open(url, '_blank');
+    // Try to use Web Share API first (works better on mobile)
+    if (navigator.share) {
+      navigator.share({
+        title: 'The Unfiltered Candidate - Roast Result',
+        text: shareText,
+      }).catch((error) => {
+        // If user cancels or error occurs, fall back to LinkedIn URL
+        if (error.name !== 'AbortError') {
+          openLinkedInShare();
+        }
+      });
+    } else {
+      // Desktop fallback - open LinkedIn compose
+      openLinkedInShare();
+    }
+  };
+
+  const openLinkedInShare = () => {
+    // LinkedIn's sharing URL - this opens the share dialog
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+    window.open(linkedInUrl, '_blank', 'width=600,height=600');
   };
 
   const handleCopy = () => {
