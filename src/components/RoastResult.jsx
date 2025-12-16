@@ -28,30 +28,55 @@ export default function RoastResult({ result, language }) {
 
   if (!result) return null;
 
-  const shareText = `🔥 I just got roasted by The Unfiltered Candidate!\n\n"${result.roasted_answer}"\n\nMy Unemployability Score: ${result.unemployability_score}% 💀\n\n#RoastMe #HRRoast #TheUnfilteredCandidate`;
+  // Create an eye-catching, viral-worthy share message
+  const shareText = `🚨 I just got BRUTALLY roasted by an AI! 🔥
+
+I tried "The Unfiltered Candidate" and here's what happened...
+
+💀 The Roast:
+"${result.roasted_answer}"
+
+📊 My Unemployability Score: ${result.unemployability_score}% 
+
+${result.unemployability_score >= 80 ? '😱 RIP my career!' : result.unemployability_score >= 60 ? '😬 Yikes, that stings!' : result.unemployability_score >= 40 ? '🤔 Not sure if I should laugh or cry...' : '😅 Could be worse... right?'}
+
+Think you can handle the truth? Try it yourself! 👇
+
+#TheUnfilteredCandidate #AIRoast #CareerHumor #JobSearch #LinkedInFun #Unemployable`;
 
   const handleLinkedInShare = () => {
-    // Try to use Web Share API first (works better on mobile)
+    // Use Web Share API if available (works great on mobile)
     if (navigator.share) {
       navigator.share({
-        title: 'The Unfiltered Candidate - Roast Result',
+        title: '🔥 I Got Roasted by The Unfiltered Candidate!',
         text: shareText,
       }).catch((error) => {
-        // If user cancels or error occurs, fall back to LinkedIn URL
+        // If user cancels, do nothing. If error, try LinkedIn direct
         if (error.name !== 'AbortError') {
           openLinkedInShare();
         }
       });
     } else {
-      // Desktop fallback - open LinkedIn compose
+      // Desktop: Open LinkedIn with pre-filled text
       openLinkedInShare();
     }
   };
 
   const openLinkedInShare = () => {
-    // LinkedIn's sharing URL - this opens the share dialog
-    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
-    window.open(linkedInUrl, '_blank', 'width=600,height=600');
+    // For desktop, we'll copy to clipboard and open LinkedIn
+    // This is the best we can do since LinkedIn removed text pre-fill from URLs
+    navigator.clipboard.writeText(shareText).then(() => {
+      // Show a brief notification
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+      
+      // Open LinkedIn feed in a new tab
+      const linkedInUrl = 'https://www.linkedin.com/feed/';
+      window.open(linkedInUrl, '_blank');
+    }).catch(() => {
+      // If clipboard fails, just open LinkedIn
+      window.open('https://www.linkedin.com/feed/', '_blank');
+    });
   };
 
   const handleCopy = () => {
