@@ -1,4 +1,4 @@
-# The Unfiltered Candidate - Frontend
+# The Unfiltered Candidate
 
 React frontend for The HR Roaster application with a modern dark mode interface.
 
