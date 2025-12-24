@@ -2,7 +2,7 @@
 
 React frontend for The HR Roaster application with a modern dark mode interface.
 
-![Application Screenshot](C:/Users/Jithi/.gemini/antigravity/brain/eaf334f0-071b-4296-b0f0-0e555151be22/uploaded_image_1766549836631.png)
+![Application Screenshot](src/assets/hr.png)
 
 ## Setup
 
